@@ -1,9 +1,9 @@
 <?php
 
-namespace iriven;
+namespace testingmic;
 
-use iriven\bin\GeoipDatabase;
-use iriven\bin\GeoipNetwork;
+use testingmic\bin\GeoipDatabase;
+use testingmic\bin\GeoipNetwork;
 class GeoIP2Country
 {
     /**

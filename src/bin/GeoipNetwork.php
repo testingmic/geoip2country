@@ -1,6 +1,6 @@
 <?php
 
-namespace iriven\bin;
+namespace testingmic\bin;
 
 class GeoipNetwork
 {
