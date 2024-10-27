@@ -12,12 +12,14 @@ class GeoIP2Country
      * @var GeoipDatabase
     **/
     private $oDBInstance=null;
+    
     /**
      * Network tools class instance
      *
      * @var GeoipNetwork
     **/
     private $oNetwork=null;
+    
     /**
      * Class Constructor
      *
@@ -29,6 +31,7 @@ class GeoIP2Country
         $this->oNetwork = new GeoipNetwork();
         return $this;
     }
+
     /**
      * Retrieve country code from given IP address
      *
@@ -45,6 +48,7 @@ class GeoIP2Country
         endif;
         return 'ZZ';
     }
+
     /**
      * @param mixed|null $ipAddress
      * @return bool
@@ -55,4 +59,5 @@ class GeoIP2Country
         $countryCode = $this->resolve($ipAddress);
         return !$countryCode || strcasecmp($countryCode, 'ZZ') == 0 ;
     }
+
 }
