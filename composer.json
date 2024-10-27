@@ -12,12 +12,6 @@
         "homepage": "https://github.com/testingmic/geoip2country"
         }
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/testingmic/geoip2country"
-        }
-    ],
     "autoload": {
         "psr-4": {"testingmic\\": "src/"}
     },
