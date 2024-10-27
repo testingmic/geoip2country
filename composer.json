@@ -2,14 +2,14 @@
     "name": "testingmic/geoip2country",
     "description": "A lightweight but powerful IP address lookup database solution to determine visitors country",
     "minimum-stability": "stable",
-    "homepage": "https://github.com/testingmic/GeoIP2Country",
+    "homepage": "https://github.com/testingmic/geoip2country",
     "keywords": ["geoip", "geolocation", "ip2country", "ip2location", "ip geolocation", "ipaddress", "ip2location lite", "php"],
     "license": "proprietary",
     "authors": [
         {
         "name": "Emmanuel Obeng",
         "email": "emmallob14@gmail.com",
-        "homepage": "https://github.com/testingmic/GeoIP2Country"
+        "homepage": "https://github.com/testingmic/geoip2country"
         }
     ],
     "autoload": {
