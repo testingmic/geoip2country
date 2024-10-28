@@ -38,22 +38,22 @@ class GeoIP2Country
      * @param string|null $ipAddress
      * @return array
      */
-    public function resolve(string $ipAddress= null): array
+    public function resolve($ipAddress= null)
     {
         $ipAddress || $ipAddress = $this->oNetwork->getIPAddress();
-        if ($this->oNetwork->isIpAddress($ipAddress)):
+        if (!empty($ipAddress) &&   $this->oNetwork->isIpAddress($ipAddress)) {
             $ipVersion = $this->oNetwork->ipVersion($ipAddress);
             $start = $this->oNetwork->ip2Integer($ipAddress);
             return $this->oDBInstance->fetch($start);
-        endif;
-        return 'ZZ';
+        }
+        return false;
     }
 
     /**
      * @param mixed|null $ipAddress
      * @return bool
      */
-    public function isReservedAddress($ipAddress=null): bool
+    public function isReservedAddress($ipAddress = null)
     {
         $ipAddress || $ipAddress = $this->oNetwork->getIPAddress();
         $countryCode = $this->resolve($ipAddress);
@@ -61,13 +61,21 @@ class GeoIP2Country
     }
 
     /**
-     * Fetch all records from the database
+     * Update existing records
      *
-     * @return array
+     * @param int $start
+     * @param int $end
+     * @param string $country_code
+     * @param string $country_name
+     * @param string $city
+     * @param float $latitude
+     * @param float $longitude
+     * @param string $continent
+     * @return bool
      */
-    public function updateExistingRecords()
+    public function updateExistingRecords($start, $end, $country_code, $country_name, $city, $latitude, $longitude, $continent)
     {
-        return $this->oDBInstance->updateExistingRecords();
+        return $this->oDBInstance->updateExistingRecords($start, $end, $country_code, $country_name, $city, $latitude, $longitude, $continent);
     }
 
 }

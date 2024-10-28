@@ -34,6 +34,7 @@ class GeoipDatabase
     public function __construct(string $database = null)
     {
         try {
+            if(!empty($this->oPDOInstance)) return $this->oPDOInstance;
             $aOptions = [
                     \PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
                     \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
@@ -172,16 +173,39 @@ class GeoipDatabase
     /**
      * Update existing records in the database
      *
-     * @return array
+     * @param int $start
+     * @param int $end
+     * @param string $country_name
+     * @param string $city
+     * @param float $latitude
+     * @param float $longitude
+     * @param string $continent
+     * @return bool
      */
-    public function updateExistingRecords()
+    public function updateExistingRecords($start, $end, $country_code, $country_name, $city, $latitude, $longitude, $continent)
     {
         
-        $data = $this->fetchAll('ipv4Range', ['start', 'end', 'country_code']);
-        foreach($data as $i => $record) {
-            print "{$i}. Processing the item {$record['country_code']}\n";
+        try
+        {
+            $sQuery = 'UPDATE `%s` SET `country_name` = :country_name, `city` = :city, `latitude` = :latitude, `longitude` = :longitude, `continent_code` = :continent 
+                WHERE `start` = :start AND `end` = :end AND country_code = :country_code';
+            $command = sprintf($sQuery, $this->tableName);
+            $statement = $this->oPDOInstance->prepare($command);
+            $statement->execute([
+                ':country_name' => $country_name,
+                ':city' => $city,
+                ':latitude' => $latitude,
+                ':longitude' => $longitude,
+                ':continent' => $continent,
+                ':start'   => $start,
+                ':end'     => $end,
+                ':country_code' => $country_code
+            ]);
+        } catch (\PDOException $th) {
+            trigger_error('Statement failed: ' . $th->getMessage(), E_USER_ERROR);
         }
-        return [];
+
+        
     }
 
     /**

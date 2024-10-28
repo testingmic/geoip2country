@@ -18,6 +18,7 @@
     "require": {
         "php": ">=7.4",
         "ext-pdo_sqlite": "*",
-        "ext-curl": "*"
+        "ext-curl": "*",
+        "geoip2/geoip2": "^3.0"
     }
 }
