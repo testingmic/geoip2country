@@ -1,7 +1,6 @@
 {
     "name": "testingmic/geoip2country",
     "description": "A lightweight but powerful IP address lookup database solution to determine visitors country",
-    "minimum-stability": "stable",
     "homepage": "https://github.com/testingmic/geoip2country",
     "keywords": ["geoip", "geolocation", "ip2country", "ip2location", "ip geolocation", "ipaddress", "ip2location lite", "php"],
     "license": "proprietary",
@@ -18,7 +17,6 @@
     "require": {
         "php": ">=7.4",
         "ext-pdo_sqlite": "*",
-        "ext-curl": "*",
-        "geoip2/geoip2": "^3.0"
+        "ext-curl": "*"
     }
 }
