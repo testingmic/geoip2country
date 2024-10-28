@@ -2,21 +2,21 @@
 
 namespace testingmic;
 
-use testingmic\bin\GeoipDatabase;
-use testingmic\bin\GeoipNetwork;
-class GeoIP2Country
+use testingmic\bin\IpAddressDatabase;
+use testingmic\bin\IpAddressNetwork;
+class IpAddressGeoLocation
 {
     /**
      * PDO SQLite3 database instance
      *
-     * @var GeoipDatabase
+     * @var IpAddressDatabase
     **/
     private $oDBInstance=null;
     
     /**
      * Network tools class instance
      *
-     * @var GeoipNetwork
+     * @var IpAddressNetwork
     **/
     private $oNetwork=null;
     
@@ -27,8 +27,8 @@ class GeoIP2Country
      */
     public function __construct(string $database = null)
     {
-        $this->oDBInstance = new GeoipDatabase($database);
-        $this->oNetwork = new GeoipNetwork();
+        $this->oDBInstance = new IpAddressDatabase($database);
+        $this->oNetwork = new IpAddressNetwork();
         return $this;
     }
 

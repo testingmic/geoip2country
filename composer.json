@@ -1,6 +1,6 @@
 {
   "name": "testingmic/geoip2country",
-  "description": "A lightweight but powerful IP address lookup database solution to determine visitors country",
+  "description": "Feature-focused version of IP Location Database: Quick country detection and geographic data for visitor IPs",
   "homepage": "https://github.com/testingmic/geoip2country",
   "minimum-stability": "stable",
   "keywords": [

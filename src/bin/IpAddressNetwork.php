@@ -2,7 +2,7 @@
 
 namespace testingmic\bin;
 
-class GeoipNetwork
+class IpAddressNetwork
 {
     /**
      * @var string $ipAddress

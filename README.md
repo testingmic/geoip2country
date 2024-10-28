@@ -1,8 +1,6 @@
-# PHP GeoIP2Country PRO (v1.2)
+# PHP IpAddressGeoLocation
 
 An IP address helps you identify visitors geographical location.
-
-## What's GeoIP2Country PRO?
 
 A PHP IP Address Geolocation library to help you identify visitors geographical location.
 
@@ -11,13 +9,11 @@ A PHP IP Address Geolocation library to help you identify visitors geographical 
 - pdo_sqlite (runtime deps)
 - php_curl (for update only)
 
-
 ## Installation And Initialisation :
 
 These instructions will get you a copy of the project up and running on your local machine.
 there are two options:
 
-- [x] import(copy) GeoIP2Country files into a specific folder of your project
 - [x] Using Composer installer(Recommended) by typing the following command:
 
 ```php
@@ -34,7 +30,7 @@ require __DIR__ . '/vendor/autoload.php';
 
 try
 {
-    $IP2Country = new testingmic\GeoIP2Country();
+    $IpAddressGeo = new testingmic\IpAddressGeoLocation();
 
 } catch (\Throwable $th) {
     trigger_error($th->getMessage(), E_USER_ERROR);
@@ -46,12 +42,10 @@ try
 
 ```php
 
-    $ipAddress_1='2a00:1450:4007:816::2004';
-    $ipAddress_2='37.140.250.97';
+    $ipAddress_1='37.140.250.97';
 
     echo '<pre>';
-    echo $IP2Country->resolve($ipAddress_1).PHP_EOL;
-    echo $IP2Country->resolve($ipAddress_2).PHP_EOL;
+    print_r($IpAddressGeo->resolve($ipAddress_1));
 
 ```
 
@@ -60,4 +54,5 @@ try
 ```php
 
     echo '<pre>';
-    echo $IP2Country->resolve().PHP_EOL;  /** resolve() method called without any argument */
+    print_r($IpAddressGeo->resolve());  /** resolve() method called without any argument */
+```

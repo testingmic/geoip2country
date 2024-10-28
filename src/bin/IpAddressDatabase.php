@@ -2,7 +2,7 @@
 
 namespace testingmic\bin;
 
-class GeoipDatabase
+class IpAddressDatabase
 {
     const DS = DIRECTORY_SEPARATOR;
     /**
@@ -82,7 +82,7 @@ class GeoipDatabase
      */
     private function genDsn(string $database = null)
     {
-        $database || $database = 'Geoip.db.sqlite';
+        $database || $database = 'IpAddress.db.sqlite';
         try {
             $destination = rtrim(dirname(__DIR__), self::DS);
             $info = new \SplFileInfo($database);
@@ -240,19 +240,30 @@ class GeoipDatabase
      * @param integer $end
      * @param integer $ipVersion
      * @param string $country
+     * @param string $country_name
+     * @param string $continent_code
+     * @param string $city
+     * @param float $latitude
+     * @param float $longitude
      * @return void
      */
-    public function insert(int $start, int $end, string $table, string $country)
+    public function insert(int $start, int $end, string $table, string $country, string $country_name, string $continent_code, string $city, float $latitude, float $longitude)
     {
         try
         {
-            $sQuery = 'INSERT INTO `%s` (`start`, `end`, `country_code`) values (:start, :end, :country_code)';
+            $sQuery = 'INSERT INTO `%s` (`start`, `end`, `country_code`, `country_name`, `continent_code`, `city`, `latitude`, `longitude`) 
+                values (:start, :end, :country_code, :country_name, :continent_code, :city, :latitude, :longitude)';
             $command = sprintf($sQuery, $table);
             $statement = $this->oPDOInstance->prepare($command);
             $statement->execute([
                 ':start'   => $start,
                 ':end'     => $end,
-                ':country_code' => $country
+                ':country_code' => $country,
+                ':country_name' => $country_name,
+                ':continent_code' => $continent_code,
+                ':city' => $city,
+                ':latitude' => $latitude,
+                ':longitude' => $longitude
             ]);
         } catch (\PDOException $th) {
             trigger_error('Statement failed: ' . $th->getMessage(), E_USER_ERROR);
