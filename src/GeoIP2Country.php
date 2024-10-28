@@ -36,15 +36,15 @@ class GeoIP2Country
      * Retrieve country code from given IP address
      *
      * @param string|null $ipAddress
-     * @return string
+     * @return array
      */
-    public function resolve(string $ipAddress= null): string
+    public function resolve(string $ipAddress= null): array
     {
         $ipAddress || $ipAddress = $this->oNetwork->getIPAddress();
         if ($this->oNetwork->isIpAddress($ipAddress)):
             $ipVersion = $this->oNetwork->ipVersion($ipAddress);
             $start = $this->oNetwork->ip2Integer($ipAddress);
-            return $this->oDBInstance->fetch($start, $ipVersion);
+            return $this->oDBInstance->fetch($start);
         endif;
         return 'ZZ';
     }
@@ -57,7 +57,17 @@ class GeoIP2Country
     {
         $ipAddress || $ipAddress = $this->oNetwork->getIPAddress();
         $countryCode = $this->resolve($ipAddress);
-        return !$countryCode || strcasecmp($countryCode, 'ZZ') == 0 ;
+        return !$countryCode || strcasecmp($countryCode['country_code'], 'ZZ') == 0 ;
+    }
+
+    /**
+     * Fetch all records from the database
+     *
+     * @return array
+     */
+    public function updateExistingRecords()
+    {
+        return $this->oDBInstance->updateExistingRecords();
     }
 
 }

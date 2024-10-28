@@ -11,12 +11,21 @@ class GeoipDatabase
      * @var \PDO
      */
     private $oPDOInstance;
+
+    /**
+     * Table name
+     *
+     * @var string
+     */
+    private $tableName = 'ipCountryRange';
+
     /**
      * PDO transaction Counter
     *
     * @var integer
     */
     private $transactionCounter = 0;
+
     /**
      * Class Constructor
      *
@@ -37,6 +46,7 @@ class GeoipDatabase
         }
         return $this->oPDOInstance;
     }
+
     /**
      * Create Database tables structure.
      *
@@ -45,25 +55,24 @@ class GeoipDatabase
     private function initialize()
     {
         $aCommands = [
-            'CREATE TABLE IF NOT EXISTS `ipv4Range`(
-                    `start` INT UNSIGNED ,
-                    `end` INT UNSIGNED ,
-                    `country` VARCHAR(2)
-                )',
-            'CREATE TABLE IF NOT EXISTS `ipv6Range`(
-                    `start` BIGINT UNSIGNED ,
-                    `end` BIGINT UNSIGNED ,
-                    `country` VARCHAR(2)
-                )',
-            'CREATE UNIQUE INDEX IF NOT EXISTS `idx_ipv4Range` ON `ipv4Range`(`start`, `end`)',
-            'CREATE UNIQUE INDEX IF NOT EXISTS `idx_ipv6Range` ON `ipv6Range`(`start`, `end`)'
-            ];
+            "CREATE TABLE IF NOT EXISTS `{$this->tableName}`(
+                `start` BIGINT UNSIGNED ,
+                `end` BIGINT UNSIGNED ,
+                `country_code` VARCHAR(2),
+                `country_name` VARCHAR(100),
+                `continent_code` VARCHAR(2),
+                `city` VARCHAR(300),
+                `latitude` FLOAT,
+                `longitude` FLOAT
+            )", "CREATE UNIQUE INDEX IF NOT EXISTS `idx_{$this->tableName}` ON `{$this->tableName}`(`start`, `end`)"
+        ];
         foreach ($aCommands as $command)
         {
             $this->oPDOInstance->query($command);
         }
         return $this;
     }
+
     /**
      * Generate PDO SQLite3 DSN
      *
@@ -86,6 +95,7 @@ class GeoipDatabase
         if (!is_dir($destination)) { mkdir($destination, '0755', true); }
         return 'sqlite:'.realpath($destination).self::DS.$dbName;
     }
+
     /**
      * Get the table list in the database
      *
@@ -106,6 +116,7 @@ class GeoipDatabase
             trigger_error($th->getMessage(), E_USER_ERROR);
         }
     }
+
     /**
      * Retrieve Column(s) value from given table
      *
@@ -127,35 +138,52 @@ class GeoipDatabase
             trigger_error($th->getMessage(), E_USER_ERROR);
         }
     }
+
     /**
      * Return Country code from given IP address (converted to integer)
      *
      * @param integer $start
      * @param integer $ipVersion  (ip version)
-     * @return string
+     * @return mixed
      */
-    public function fetch(int $start, int $ipVersion)
+    public function fetch(int $start)
     {
         try
         {
-            $sCommand  = 'SELECT `start`, `end`, `country` ';
-            $sCommand .= 'FROM `ipv%dRange` ';
-            $sCommand .= 'WHERE `start` <= :start ';
+            $sCommand  = 'SELECT `start`, `end`, `country_code`, `country_name`, `continent_code`, `city`, `latitude`, `longitude` ';
+            $sCommand .= "FROM `{$this->tableName}` ";
+            $sCommand .= "WHERE `start` <= :start ";
             $sCommand .= 'ORDER BY start DESC LIMIT 1';
-            $statement = $this->oPDOInstance->prepare(sprintf($sCommand, $ipVersion));
+            $statement = $this->oPDOInstance->prepare(sprintf($sCommand));
             $statement->execute([':start' => $start ]);
-            $row = $statement->fetch(\PDO::FETCH_OBJ);
+            $row = $statement->fetch(\PDO::FETCH_ASSOC);
             if (is_bool($row) && $row === false)
             {
-                $row = new \stdClass();
-                $row->end = 0;
+                $row = [];
+                $row['end'] = 0;
             }
-            if ($row->end < $start || !$row->country) { $row->country = 'ZZ'; }
-            return $row->country;
+            if ($row['end'] < $start || !$row['country_code']) { $row['country_code'] = 'ZZ'; }
+            return $row;
         } catch (\PDOException $th) {
             trigger_error($th->getMessage(), E_USER_ERROR);
         }
     }
+
+    /**
+     * Update existing records in the database
+     *
+     * @return array
+     */
+    public function updateExistingRecords()
+    {
+        
+        $data = $this->fetchAll('ipv4Range', ['start', 'end', 'country_code']);
+        foreach($data as $i => $record) {
+            print "{$i}. Processing the item {$record['country_code']}\n";
+        }
+        return [];
+    }
+
     /**
      * Empty a given list of database tables
      *
@@ -171,6 +199,7 @@ class GeoipDatabase
             if (!empty($tablesList)):
                 $sCommand = 'DELETE FROM `%s`';
                 foreach ($tablesList as $sTable) {
+                    if($sTable === $this->tableName) { continue; }
                     $this->oPDOInstance->query(sprintf($sCommand, $sTable));
                 }
                 $this->oPDOInstance->query('VACUUM');
@@ -179,6 +208,7 @@ class GeoipDatabase
             trigger_error('Statement failed: '.$th->getMessage(), E_USER_ERROR);
         }
     }
+
     /**
      * Insert data into database
      *
@@ -188,22 +218,23 @@ class GeoipDatabase
      * @param string $country
      * @return void
      */
-    public function insert(int $start, int $end, int $ipVersion, string $country)
+    public function insert(int $start, int $end, string $table, string $country)
     {
         try
         {
-            $sQuery = 'INSERT INTO `ipv%dRange` (`start`, `end`, `country`) values (:start, :end, :country)';
-            $command = sprintf($sQuery, $ipVersion);
+            $sQuery = 'INSERT INTO `%s` (`start`, `end`, `country_code`) values (:start, :end, :country_code)';
+            $command = sprintf($sQuery, $table);
             $statement = $this->oPDOInstance->prepare($command);
             $statement->execute([
                 ':start'   => $start,
                 ':end'     => $end,
-                ':country' => $country
+                ':country_code' => $country
             ]);
         } catch (\PDOException $th) {
             trigger_error('Statement failed: ' . $th->getMessage(), E_USER_ERROR);
         }
     }
+
     /**
      * Begin PDO transaction, turning off autocommit
      *
@@ -214,6 +245,7 @@ class GeoipDatabase
         if (!$this->transactionCounter++) {return $this->oPDOInstance->beginTransaction();}
         return $this->transactionCounter >= 0;
     }
+
     /**
      * Commit PDO transaction changes
      *
@@ -224,6 +256,7 @@ class GeoipDatabase
         if (!--$this->transactionCounter) {return $this->oPDOInstance->commit(); }
         return $this->transactionCounter >= 0;
     }
+    
     /**
      * Rollback PDO transaction, Recognize mistake and roll back changes
      *
