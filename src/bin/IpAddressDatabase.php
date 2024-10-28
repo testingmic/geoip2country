@@ -82,7 +82,7 @@ class IpAddressDatabase
      */
     private function genDsn(string $database = null)
     {
-        $database || $database = 'IpAddress.db.sqlite';
+        $database || $database = 'Geoip.db.sqlite';
         try {
             $destination = rtrim(dirname(__DIR__), self::DS);
             $info = new \SplFileInfo($database);
@@ -163,7 +163,9 @@ class IpAddressDatabase
                 $row = [];
                 $row['end'] = 0;
             }
-            if ($row['end'] < $start || !$row['country_code']) { $row['country_code'] = 'ZZ'; }
+            if ($row['end'] < $start || empty($row['country_code'])) { 
+                $row['country_code'] = 'ZZ'; 
+            }
             return $row;
         } catch (\PDOException $th) {
             trigger_error($th->getMessage(), E_USER_ERROR);

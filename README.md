@@ -47,6 +47,17 @@ try
     echo '<pre>';
     print_r($IpAddressGeo->resolve($ipAddress_1));
 
+    Array
+    (
+        [start] => 629996032
+        [end] => 629996288
+        [country_code] => UA
+        [country_name] => United States
+        [continent_code] => NA
+        [city] => Alexandria
+        [latitude] => 38.8031
+        [longitude] => -77.0388
+    )
 ```
 
 #### Getting current visitor Country code (auto detect his IP address):
