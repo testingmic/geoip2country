@@ -5,6 +5,6 @@
         }
     },
     "require": {
-        "atchondjo/geoip2country": "^2.1"
+        "atchondjo/geoip2country": "^2.0"
     }
 }
