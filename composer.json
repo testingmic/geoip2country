@@ -1,10 +1,9 @@
 {
+    "name": "testingmic/ipaddressnetwork",
+    "description": "Get the current visitor IP Address and determine the country, city, latitude, longitude, and ISP",
     "autoload": {
         "psr-4": {
           "App\\": "src/"
         }
-    },
-    "require": {
-        "atchondjo/geoip2country": "^2.0"
     }
 }
