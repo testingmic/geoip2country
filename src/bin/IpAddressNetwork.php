@@ -7,7 +7,8 @@ class IpAddressNetwork
     /**
      * @var string $ipAddress
     **/
-    private $ipAddress=null;
+    private $ipAddress;
+    
     /**
      * Class constructor.
      *

@@ -1,40 +1,10 @@
 {
-  "name": "testingmic/geoip2country",
-  "description": "Feature-focused version of IP Location Database: Quick country detection and geographic data for visitor IPs",
-  "homepage": "https://github.com/testingmic/geoip2country",
-  "minimum-stability": "stable",
-  "keywords": [
-    "geoip",
-    "geolocation",
-    "ip2country",
-    "ip2location",
-    "ip geolocation",
-    "ipaddress",
-    "ip2location lite",
-    "php"
-  ],
-  "license": "proprietary",
-  "authors": [
-    {
-      "name": "Emmanuel Obeng",
-      "email": "emmallob14@gmail.com",
-      "homepage": "https://github.com/testingmic/geoip2country"
+    "autoload": {
+        "psr-4": {
+          "App\\": "src/"
+        }
+    },
+    "require": {
+        "atchondjo/geoip2country": "^2.1"
     }
-  ],
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/testingmic/geoip2country"
-    }
-  ],
-  "autoload": {
-    "psr-4": {
-      "testingmic\\": "src/"
-    }
-  },
-  "require": {
-    "php": ">=7.4",
-    "ext-pdo_sqlite": "*",
-    "ext-curl": "*"
-  }
 }

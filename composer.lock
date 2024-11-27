@@ -4,12 +4,73 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4b4d91821e51213e126340bdd06a810c",
-    "packages": [],
+    "content-hash": "99e8c2624bfb56443796e688b0773a09",
+    "packages": [
+        {
+            "name": "atchondjo/geoip2country",
+            "version": "v2.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/iriven/GeoIP2Country.git",
+                "reference": "25bdec7dac8d48012997a3bb40c4771218500fe1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/iriven/GeoIP2Country/zipball/25bdec7dac8d48012997a3bb40c4771218500fe1",
+                "reference": "25bdec7dac8d48012997a3bb40c4771218500fe1",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-pdo_sqlite": "*",
+                "php": ">=7.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "iriven\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "Alfred TCHONDJO",
+                    "email": "contact.atchondjo@gmail.com",
+                    "homepage": "https://github.com/iriven/GeoIP2Country"
+                }
+            ],
+            "description": "A lightweight but powerful IP address lookup database solution to determine visitors country",
+            "homepage": "https://github.com/iriven/GeoIP2Country",
+            "keywords": [
+                "IP2Country",
+                "geoip",
+                "geolocation",
+                "ip geolocation",
+                "ip2location",
+                "ip2location lite",
+                "ipaddress",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/iriven/GeoIP2Country/issues",
+                "source": "https://github.com/iriven/GeoIP2Country/tree/v2.0.6"
+            },
+            "funding": [
+                {
+                    "url": "https://www.paypal.com/donate/?hosted_button_id=ZCGRGGSB4XS4W",
+                    "type": "custom"
+                }
+            ],
+            "time": "2023-04-16T01:11:35+00:00"
+        }
+    ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
@@ -17,6 +78,6 @@
         "ext-pdo_sqlite": "*",
         "ext-curl": "*"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "plugin-api-version": "2.6.0"
 }
