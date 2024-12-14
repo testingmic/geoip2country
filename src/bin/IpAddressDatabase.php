@@ -31,7 +31,7 @@ class IpAddressDatabase
      *
      * @param string $database
      */
-    public function __construct(string $database = null)
+    public function __construct($database = null)
     {
         try {
             if(!empty($this->oPDOInstance)) return $this->oPDOInstance;
@@ -80,9 +80,8 @@ class IpAddressDatabase
      * @param string|null $database
      * @return string
      */
-    private function genDsn(string $database = null)
+    private function genDsn($database = null)
     {
-        $database || $database = 'Geoip.db.sqlite';
         try {
             $destination = rtrim(dirname(__DIR__), self::DS);
             $info = new \SplFileInfo($database);

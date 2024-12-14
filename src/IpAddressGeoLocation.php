@@ -11,23 +11,30 @@ class IpAddressGeoLocation
      *
      * @var IpAddressDatabase
     **/
-    private $oDBInstance=null;
+    private $oDBInstance;
     
     /**
      * Network tools class instance
      *
      * @var IpAddressNetwork
     **/
-    private $oNetwork=null;
+    private $oNetwork;
+
+    /**
+     * Database name
+     *
+     * @var string
+    **/
+    private $database = 'Geoip.db.sqlite';
     
     /**
      * Class Constructor
      *
      * @param string $database
      */
-    public function __construct(string $database = null)
+    public function __construct()
     {
-        $this->oDBInstance = new IpAddressDatabase($database);
+        $this->oDBInstance = new IpAddressDatabase($this->database);
         $this->oNetwork = new IpAddressNetwork();
         return $this;
     }
